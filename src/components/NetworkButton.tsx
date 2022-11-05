@@ -19,7 +19,7 @@ const NetworkButton = () => {
   console.log("huh", networkId);
   return (
     <Menu>
-      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+      <MenuButton as={Button} rightIcon={<ChevronDownIcon />} zIndex={1000}>
         <Box
           flexDirection={"row"}
           flex={1}
@@ -43,7 +43,7 @@ const NetworkButton = () => {
           )}
         </Box>
       </MenuButton>
-      <MenuList>
+      <MenuList zIndex={1000}>
         {USER_SELECTABLE_NETWORKS.map((network, index) => (
           <MenuItem
             minH="48px"

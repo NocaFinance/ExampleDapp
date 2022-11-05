@@ -204,7 +204,7 @@ export const NETWORKS: { [key in NetworkId & number]: INetwork } = {
     },
     rpcUrls: ["https://polygon-testnet.public.blastapi.io"],
     blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
-    image: "tokens/polygon-icon.png",
+    image: "/tokens/polygon-icon.png",
     imageAltText: "Polygon Logo",
     coingecko_platformId: "polygon-pos",
   },

@@ -52,6 +52,7 @@ type onChainProvider = {
   networkName: string;
   providerUri: string;
   providerInitialized: boolean;
+  isMetamask: boolean;
 };
 
 interface IConnectionError {
@@ -133,7 +134,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
   const [networkName, setNetworkName] = useState("");
   const [providerUri, setProviderUri] = useState("");
   const [providerInitialized, setProviderInitialized] = useState(false);
-
+  const [isMetamask, setIsMetamask] = useState(false);
   const [web3Modal] = useState<Web3Modal>(initModal);
 
   function hasCachedProvider(): boolean {
@@ -164,11 +165,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
           .then((network) => network.chainId);
         console.log("chain2", currChainId);
         if (newChainId !== currChainId) {
-          // then provider is out of sync, reload per metamask recommendation
-          // setTimeout(
-          //   () => typeof window !== "undefined" && window.location.reload(),
-          //   1
-          // );
+          setTimeout(
+            () => typeof window !== "undefined" && window.location.reload(),
+            1
+          );
           setNetworkId(getNetworkIdFromChainId(currChainId) || -1);
         } else {
           setNetworkId(getNetworkIdFromChainId(currChainId) || -1);
@@ -200,12 +200,12 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
         return;
       }
     }
-
     // new _initListeners implementation matches Web3Modal Docs
     // ... see here: https://github.com/Web3Modal/web3modal/blob/2ff929d0e99df5edf6bb9e88cff338ba6d8a3991/example/src/App.tsx#L185
     _initListeners(rawProvider);
 
     const connectedProvider = new Web3Provider(rawProvider, "any");
+    const isMetamask = (connectedProvider as any).provider.connected == false;
     const connectedAddress = await connectedProvider.getSigner().getAddress();
     const newNetworkId = getNetworkIdFromChainId(
       await connectedProvider.getNetwork().then((network) => network.chainId)
@@ -217,6 +217,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
       // Eventually we'll be fine without doing network validations.
       setAddress(connectedAddress);
       setNetworkId(newNetworkId);
+      setIsMetamask(isMetamask);
       if (newNetworkId != -1) {
         setNetworkName(NETWORKS[newNetworkId].chainName);
         setProviderUri(NETWORKS[newNetworkId].rpcUrls[0]);
@@ -256,6 +257,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
       networkName,
       providerUri,
       providerInitialized,
+      isMetamask,
     }),
     [
       connect,
@@ -270,6 +272,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
       networkName,
       providerUri,
       providerInitialized,
+      isMetamask,
     ]
   );
 
