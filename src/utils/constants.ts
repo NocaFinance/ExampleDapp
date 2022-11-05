@@ -344,27 +344,30 @@ export const DEPOSIT_ADDRESS: { [x in NetworkId]: string } = {
 
 export const pools: pool[] = [
   {
-    creditRating: "AA",
-    TVL: 1000000,
-    maxAPY: 0.3,
-    name: "Auros",
+    creditRating: "A",
+    TVL: "1,000,000",
+    maxAPY: 0.1,
+    name: "Solar PV",
+    pic: "https://inteng-storage-us.s3.amazonaws.com/img/iea/r1OrdAK76n/solar-panels-work.jpg",
     long_desc:
-      "Auros is an algorithmic trading and market-making firm founded by derivatives traders and trading system architects with over 20 years of experience, generating daily notional turnover in billions of dollars.",
+      "Solar PV is one of the most exciting investment opportunities helping to solve climate change but also yield impressive returns. Due to government incentives but also plummeting costs, the ROI has been increasing steadily. Investments are also nearly risk free as the technology is proven and companies in the space are financially stable.",
   },
   {
-    creditRating: "A",
-    TVL: 200000,
+    creditRating: "AA",
+    TVL: "500,000",
     maxAPY: 0.2,
-    name: "Parallel Capital",
+    name: "EVs",
+    pic: "https://thumbor.forbes.com/thumbor/fit-in/960x/https://www.forbes.com/wheels/wp-content/uploads/2021/10/Tesla-Model-3_BH_764E8440-edit.jpg",
     long_desc:
-      "Established in 2018 by a team of trading experts, Parallel Capital provides consistently deep liquidity to every major crypto exchange using its proprietary trading algorithms.",
+      "EVs are a proven technology, which due to increasing consumer demand lead to extraordinary returns. Tesla as the pioneer has been profitable for 2 years now and has been growing strongly. But also other players have been benefiting from the trend. Generally, due to the high premium consumers are willing to pay, this investment pool yields a very safe high return.",
   },
   {
     creditRating: "B",
-    TVL: 500000,
+    TVL: "200,000",
     maxAPY: 0.5,
-    name: "Siroexmon",
+    name: "Direct Air Capture",
+    pic: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOkd1e7ofnafEPeXbqLf-tR4zVEPycM08LoQ&usqp=CAU",
     long_desc:
-      "Sirox aims to cover short term capital needs (less than 1 month) for SMBs (e.g. payroll-advancing company).",
+      "Direct Air Capture is a very novel technology which many experts believe to be crucial to solving climate change. By extracting carbon dioxide from air, we can reduce our emissions drasticially. It's a high growth investment pool with underlying technical and market risks however.",
   },
 ];

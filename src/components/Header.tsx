@@ -24,17 +24,19 @@ const Header = () => {
         justifyContent={"space-between"}
         px="200px"
         height="75px"
-        alignItems={"center "}
+        alignItems={"center"}
       >
         <Box>
           <Link onClick={() => router.push("/")}>
             <Box alignItems="center" justifyContent={"center"}>
               <Image
                 src={
-                  "https://i0.wp.com/atlendis.io/wp-content/uploads/2022/02/atlendis-logo-horizontal-white.png"
+                  "/logo_transparent.png"
+                  // "https://i0.wp.com/atlendis.io/wp-content/uploads/2022/02/atlendis-logo-horizontal-white.png"
                 }
                 alt="token"
-                width="200px"
+                width="75px"
+                marginTop={"10px"}
                 objectFit={"contain"}
               />
             </Box>

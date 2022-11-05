@@ -1,7 +1,8 @@
 export interface pool {
   creditRating: "AA" | "A" | "B";
-  TVL: number;
+  TVL: string;
   maxAPY: number;
   name: string;
   long_desc: string;
+  pic: string;
 }

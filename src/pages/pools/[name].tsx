@@ -30,31 +30,45 @@ const PoolDetails: NextPage = () => {
   const pool = pools.find((pool) => pool.name == name);
   if (pool) {
     return (
-      <Box w="100%">
+      <Box
+        w="100%"
+        flex="1"
+        display="flex"
+        flexDir={"column"}
+        border="1px"
+        borderRadius={"5px"}
+        boxShadow={"dark-lg"}
+      >
+        <Image
+          src={pool.pic}
+          alt="token"
+          width="100%"
+          height="50px"
+          objectFit={"cover"}
+        />
         <Box
           flexDirection="row"
           display="flex"
-          marginX="5"
           marginY="1"
-          padding="2"
+          padding="20px"
           justifyContent={"space-between"}
           alignItems="center"
         >
-          <Box flexDir={"row"} display="flex">
-            <Box alignItems={"center"} display={"flex"} marginLeft="5px">
-              <Text fontWeight={"bold"}>{pool.name}</Text>
+          <Box flexDir={"row"} display="flex" flex="1">
+            <Box alignItems={"center"} display={"flex"}>
+              <Heading>{pool.name}</Heading>
             </Box>
           </Box>
           <Box flexDir={"column"} width="250px">
             <Text textAlign={"right"}>Max APY:</Text>
-            <Text textAlign={"right"}>Credit Rating:</Text>
+            <Text textAlign={"right"}>Risk:</Text>
           </Box>
           <Box flexDir={"column"} marginLeft="5px">
-            <Text fontWeight={"bold"}>{pool.maxAPY}</Text>
+            <Text fontWeight={"bold"}>{pool.maxAPY * 100}%</Text>
             <Text fontWeight={"bold"}>{pool.creditRating}</Text>
           </Box>
         </Box>
-        <Box flexDir={"row"} display="flex">
+        <Box flexDir={"row"} display="flex" padding="20px">
           <Box>
             <Heading size="md">General</Heading>
             <Text>{pool.long_desc}</Text>
@@ -168,9 +182,11 @@ const DepositBox = ({ pool }: { pool: pool }) => {
   if (!loading && connected)
     return (
       <Box>
-        <Box width="100%" marginBottom="20px" zIndex={0.1}>
-          <NetworkButton />
-        </Box>
+        {isMetamask && (
+          <Box width="100%" marginBottom="20px" zIndex={0.1}>
+            <NetworkButton />
+          </Box>
+        )}
         <InputGroup>
           <InputLeftElement pointerEvents="none" zIndex={0.5}>
             <Box justifyContent={"center"} alignItems={"center"} marginX="10px">
