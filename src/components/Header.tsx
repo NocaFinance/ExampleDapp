@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Image,
   Link,
   Text,
   useColorMode,
@@ -11,8 +12,10 @@ import {
 import Logo from "../../public/x2";
 import { useRouter } from "next/router";
 import { shorten } from "../utils/networkHelpers";
+import { useWeb3Context } from "./Web3ContextProvider";
 const Header = () => {
   const router = useRouter();
+  const { address, connect, connected, disconnect } = useWeb3Context();
   const { toggleColorMode } = useColorMode();
   return (
     <>
@@ -25,23 +28,41 @@ const Header = () => {
       >
         <Box>
           <Link onClick={() => router.push("/")}>
-            <Logo height={50} />
+            <Box alignItems="center" justifyContent={"center"}>
+              <Image
+                src={
+                  "https://i0.wp.com/atlendis.io/wp-content/uploads/2022/02/atlendis-logo-horizontal-white.png"
+                }
+                alt="token"
+                width="200px"
+                objectFit={"contain"}
+              />
+            </Box>
           </Link>
         </Box>
         <Box display="flex" textAlign="right">
-          {router.route == "/" ? (
+          {!connected ? (
             <Button
-              onClick={() => router.push("/overview")}
               fontSize="14px"
               lineHeight="17px"
+              colorScheme="green"
               variant="solid"
-              textAlign="center"
-              mr="24px"
+              onClick={() => {
+                connect();
+              }}
             >
-              App
+              Connect Wallet
             </Button>
           ) : (
-            <Box></Box>
+            <Button
+              fontSize="14px"
+              lineHeight="17px"
+              colorScheme="green"
+              variant="solid"
+              onClick={disconnect}
+            >
+              {shorten(address)}
+            </Button>
           )}
         </Box>
       </Box>
