@@ -79,11 +79,39 @@ contract Communicator is IMessageRecipient {
         uint256 amount,
         string memory fct,
         uint16 _dstChainId
-    ) internal {}
+    ) internal {
+        console2.logAddress(hypOutbox);
+        console2.logUint(hypDomainIdentifier[_dstChainId - 1]);
+        console2.logBytes(abi.encodePacked(amount));
+
+        IOutbox(hypOutbox).dispatch{gas: 1000000}(
+            hypDomainIdentifier[_dstChainId - 1],
+            _addressToBytes32(dstCommunicators[_dstChainId - 1]), // address of the destination chain satellite
+            abi.encode(fct, sender, amount, chainId)
+        );
+    }
 
     function handle(
         uint32 _origin,
         bytes32 _sender,
         bytes calldata _messageBody
-    ) external {}
+    ) external {
+        (
+            string memory fct,
+            address sender,
+            uint256 amount,
+            uint16 originChainId
+        ) = abi.decode(_messageBody, (string, address, uint256, uint16));
+        if (keccak256(bytes(fct)) == keccak256(bytes("deposit"))) {
+            ProtocolConnector(linkedAddress).depositFunds(sender, amount);
+        } else if (keccak256(bytes(fct)) == keccak256(bytes("withdraw"))) {
+            ProtocolConnector(linkedAddress).withdrawFunds(
+                sender,
+                amount,
+                originChainId
+            );
+        } else if (keccak256(bytes(fct)) == keccak256(bytes("release"))) {
+            UserDeposit(linkedAddress).releaseFunds(sender, amount);
+        }
+    }
 }
