@@ -6,7 +6,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Box>
       <Header />
-      <main>{children}</main>
+      <Box
+        display="flex"
+        justifyContent={"space-between"}
+        px="240px"
+        flex="1"
+        alignItems={"center"}
+      >
+        {children}
+      </Box>
     </Box>
   );
 };

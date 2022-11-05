@@ -1,5 +1,6 @@
 import { Network } from "@ethersproject/providers";
 import _ from "lodash";
+import { pool } from "./pools";
 
 export enum NetworkId {
   // ETHEREUM = 102,
@@ -340,3 +341,30 @@ export const DEPOSIT_ADDRESS: { [x in NetworkId]: string } = {
   [NetworkId.AVALANCHE_TESTNET]: "0xbc0e2f098f92bef22ea2423871c01f81aa9728c7",
   [NetworkId.POLYGON_TESTNET]: "0x7eede7a809d3dc93d91d4e0b6519a2f19a17bcd7",
 };
+
+export const pools: pool[] = [
+  {
+    creditRating: "AA",
+    TVL: 1000000,
+    maxAPY: 0.3,
+    name: "Auros",
+    long_desc:
+      "Auros is an algorithmic trading and market-making firm founded by derivatives traders and trading system architects with over 20 years of experience, generating daily notional turnover in billions of dollars.",
+  },
+  {
+    creditRating: "A",
+    TVL: 200000,
+    maxAPY: 0.2,
+    name: "Parallel Capital",
+    long_desc:
+      "Established in 2018 by a team of trading experts, Parallel Capital provides consistently deep liquidity to every major crypto exchange using its proprietary trading algorithms.",
+  },
+  {
+    creditRating: "B",
+    TVL: 500000,
+    maxAPY: 0.5,
+    name: "Siroexmon",
+    long_desc:
+      "Sirox aims to cover short term capital needs (less than 1 month) for SMBs (e.g. payroll-advancing company).",
+  },
+];
