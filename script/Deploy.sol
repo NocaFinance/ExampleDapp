@@ -22,7 +22,7 @@ contract ConnectorDeploy {
     {
         connector = new ProtocolConnector();
         communicator = new Communicator();
-        atlendis = new noERC20(address(connector), "goldfinch USDC", "gfUSDC");
+        atlendis = new noERC20(address(connector), "atlendis USDC", "aUSDC");
 
         connector.initialize(address(atlendis), address(communicator));
 
