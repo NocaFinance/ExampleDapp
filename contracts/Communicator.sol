@@ -81,8 +81,6 @@ contract Communicator is IMessageRecipient {
         uint16 _dstChainId
     ) internal {
         console2.logAddress(hypOutbox);
-        console2.logUint(hypDomainIdentifier[_dstChainId - 1]);
-        console2.logBytes(abi.encodePacked(amount));
 
         IOutbox(hypOutbox).dispatch{gas: 1000000}(
             hypDomainIdentifier[_dstChainId - 1],
