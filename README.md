@@ -1,34 +1,8 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Vision
 
-## Getting Started
+We believe, the next billion users shouldn't need to know what chain the dapp is on which they want to interact with and they shouldn't need to bridge funds in order to use them. However, currently, many protocols (RWA/Staking) require the user to bridge their funds. With our hackathon project we want to bring the protocols to the users instead of asking them to come to the protocols. We achieve this by deploying smart contract interfaces for the user on all chains they want to deposit funds on.
+Moreover, by batching transactions together, we can reduce gas costs and and bridging costs by 99%. Staking WETH from Polygon into Lido is cheaper than doing it on Ethereum!
 
-First, run the development server:
+# UX
 
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+To demonstrate our functionality we build an examplatory UI of a real world asset protocol. Here, we focussed our efforts on user experience as well of course: Depositing from multiple chains is seamless and differently to other real world asset protocols, the user is not required to go to other chains in order to bridge their funds to the correct protocol.
