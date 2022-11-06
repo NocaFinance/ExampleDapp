@@ -15,12 +15,12 @@ contract ProtocolConnector {
     mapping(uint256 => mapping(address => uint256)) public investedAPWine;
     uint256 public countUser;
 
-    InoERC20 goldfinch;
+    InoERC20 atlendis;
 
     Communicator communicator;
 
     function initialize(address _goldfinch, address _communicator) public {
-        goldfinch = InoERC20(_goldfinch);
+        atlendis = InoERC20(_goldfinch);
         communicator = Communicator(_communicator);
     }
 
@@ -44,7 +44,7 @@ contract ProtocolConnector {
         uint16 originChainId
     ) public onlyCommunicator {
         require(
-            goldfinch.balanceOf(sender) >= amount,
+            atlendis.balanceOf(sender) >= amount,
             "User does not have enough funds."
         );
 

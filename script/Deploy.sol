@@ -10,7 +10,7 @@ import {noERC20} from "../contracts/tokens/noERC20.sol";
 contract ConnectorDeploy {
     ProtocolConnector connector;
     Communicator communicator;
-    noERC20 goldfinch;
+    noERC20 atlendis;
 
     function connectorDeploy(uint16 _chainId, uint16 _masterChainId)
         internal
@@ -26,7 +26,7 @@ contract ConnectorDeploy {
 
         connector.initialize(address(atlendis), address(communicator));
 
-        return (address(communicator), address(connector), address(goldfinch));
+        return (address(communicator), address(connector), address(atlendis));
     }
 }
 
