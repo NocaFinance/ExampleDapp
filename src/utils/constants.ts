@@ -4,7 +4,7 @@ import { pool } from "./pools";
 
 export enum NetworkId {
   // ETHEREUM = 102,
-  ETHEREUM_TESTNET = 3,
+  // ETHEREUM_TESTNET = 3,
 
   // ARBITRUM = 42161,
   // ARBITRUM_TESTNET = 421611,
@@ -20,19 +20,20 @@ export enum NetworkId {
   // FANTOM_TESTNET = 4002,
 
   // OPTIMISM = 10,
-  // OPTIMISM_TESTNET = 69,
+  OPTIMISM_TESTNET = 69,
 
   // BOBA = 288,
   // BOBA_TESTNET = 28,
 }
 
-type MASTERCHAINIDTYPE = NetworkId.AVALANCHE_TESTNET;
+// type MASTERCHAINIDTYPE = NetworkId.AVALANCHE_TESTNET;
 
 export const evmChainId: { [x in NetworkId]: number } = {
   // [NetworkId.ETHEREUM]: 1,
-  [NetworkId.ETHEREUM_TESTNET]: 5,
+  // [NetworkId.ETHEREUM_TESTNET]: 5,
   //  [NetworkId.AVALANCHE]: 43114,
   [NetworkId.AVALANCHE_TESTNET]: 43113,
+  [NetworkId.OPTIMISM_TESTNET]: 420,
   //  [NetworkId.BSC]: 56,
   // [NetworkId.BSC_TESTNET]: 97,
   //  [NetworkId.POLYGON]: 137,
@@ -86,8 +87,9 @@ interface INetwork {
 // (e.g. testnets, or mainnets being prepared for launch) but need to be selected directly via the wallet.
 export const USER_SELECTABLE_NETWORKS = [
   // NetworkId.ETHEREUM,
+  NetworkId.OPTIMISM_TESTNET,
   NetworkId.AVALANCHE_TESTNET,
-  NetworkId.ETHEREUM_TESTNET
+  // NetworkId.ETHEREUM_TESTNET
   // NetworkId.BSC_TESTNET,
 ];
 
@@ -106,20 +108,20 @@ export const NETWORKS: { [key in NetworkId & number]: INetwork } = {
   //   imageAltText: "Ethereum Logo",
   //   coingecko_platformId: "ethereum",
   // },
-  [NetworkId.ETHEREUM_TESTNET]: {
-    chainName: "Goerli Testnet",
-    chainId: evmChainId[NetworkId.ETHEREUM_TESTNET],
-    nativeCurrency: {
-      name: "Ethereum",
-      symbol: "ETH",
-      decimals: 18,
-    },
-    rpcUrls: ["https://ethereum-goerli-rpc.allthatnode.com"],
-    blockExplorerUrls: ["https://rinkeby.etherscan.io/#/"],
-    image: "/tokens/ethereum-icon.png",
-    imageAltText: "Ethereum Logo",
-    coingecko_platformId: "ethereum",
-  },
+  // [NetworkId.ETHEREUM_TESTNET]: {
+  //   chainName: "Goerli Testnet",
+  //   chainId: evmChainId[NetworkId.ETHEREUM_TESTNET],
+  //   nativeCurrency: {
+  //     name: "Ethereum",
+  //     symbol: "ETH",
+  //     decimals: 18,
+  //   },
+  //   rpcUrls: ["https://ethereum-goerli-rpc.allthatnode.com"],
+  //   blockExplorerUrls: ["https://rinkeby.etherscan.io/#/"],
+  //   image: "/tokens/ethereum-icon.png",
+  //   imageAltText: "Ethereum Logo",
+  //   coingecko_platformId: "ethereum",
+  // },
   // [NetworkId.ARBITRUM]: {
   //   chainName: "Arbitrum",
   //   chainId: 42161,
@@ -163,6 +165,20 @@ export const NETWORKS: { [key in NetworkId & number]: INetwork } = {
     image: "/tokens/avalanche-icon.png",
     imageAltText: "Avalanche Logo",
     coingecko_platformId: "avalanche",
+  },
+  [NetworkId.OPTIMISM_TESTNET]: {
+    chainName: "Optimism Goerli Testnet",
+    chainId: evmChainId[NetworkId.OPTIMISM_TESTNET],
+    nativeCurrency: {
+      name: "ETH",
+      symbol: "ETH",
+      decimals: 18,
+    },
+    rpcUrls: ["https://opt-goerli.g.alchemy.com/v2/UreR4A4iiRN7RfXasYu0DIuLUn8kWug-"],
+    blockExplorerUrls: ["https://goerli-explorer.optimism.io "],
+    image: "/tokens/optimism-icon.png",
+    imageAltText: "Optimism Logo",
+    coingecko_platformId: "optimism",
   },
   // [NetworkId.AVALANCHE]: {
   //   chainName: "Avalanche",
@@ -290,19 +306,19 @@ export const protocols = [
     depositTokenNames: ["Polygon Morpho USDC"],
   },
 ];
-export const MASTER_CHAIN = NetworkId.AVALANCHE_TESTNET;
+export const MASTER_CHAIN = NetworkId.POLYGON_TESTNET;
 export const tokens = [
   {
     name: "USDC",
     pic: "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
     networks: [
       {
-        network: NetworkId.AVALANCHE_TESTNET,
-        address: "0x01a2c4c37138604a5973e7a5aa4cad00c7639ec4",
+        network: NetworkId.OPTIMISM_TESTNET,
+        address: "0xd273122273168e915e28ddc06e3e206bc651ea99",
       },
       {
-        network: NetworkId.ETHEREUM_TESTNET,
-        address: "0x1039b0921cae63ff7998d5e4b3dad47fd8590a4d",
+        network: NetworkId.AVALANCHE_TESTNET,
+        address: "0xc0dd1c990e9b9b1ff46290e12e4dc58caad7611f",
       },
     ],
   },
@@ -329,16 +345,16 @@ export const investmentTokens = [
     networks: [
       {
         network: NetworkId.POLYGON_TESTNET,
-        address: "0xfd8d1289c360fe2747bfd13a4c298ae042c7b6a0",
+        address: "0x61d07e56d92bd012ed908d288c755af43a6f1500",
       },
     ],
   },
 ];
 
 export const DEPOSIT_ADDRESS: { [x in NetworkId]: string } = {
-  [NetworkId.ETHEREUM_TESTNET]: "0x3b92fdcf856179d41820209823602189b6dfc552",
+  [NetworkId.AVALANCHE_TESTNET]: "0x66c9650083fd55f0ed43a5ef2a98dbec1ee3e718",
   // [NetworkId.BSC_TESTNET]: "",
-  [NetworkId.AVALANCHE_TESTNET]: "0xd1923183c2cded581f2d1772044317b4a413a19d",
+  [NetworkId.OPTIMISM_TESTNET]: "0xced3ed4376a1329ea18895d35cff7d6cd990ea9d",
   [NetworkId.POLYGON_TESTNET]: "0xd1923183c2cded581f2d1772044317b4a413a19d",
 };
 

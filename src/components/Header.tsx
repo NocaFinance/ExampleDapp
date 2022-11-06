@@ -30,17 +30,17 @@ const Header = () => {
     console.log("lol", address);
     if (connected && address) {
       console.log("namein");
-      const ethProvider = new ethers.providers.JsonRpcProvider(
-        NETWORKS[NetworkId.ETHEREUM_TESTNET].rpcUrls[0],
-        5
-      );
-      console.log("lol", address);
+      // const ethProvider = new ethers.providers.JsonRpcProvider(
+      //   NETWORKS[NetworkId.].rpcUrls[0],
+      //   5
+      // );
+      // console.log("lol", address);
 
-      ethProvider.lookupAddress(address).then((name) => {
-        console.log("namead", address.toLowerCase());
-        console.log("name", name);
-        if (name) setENSName(name);
-      });
+      // ethProvider.lookupAddress(address).then((name) => {
+      //   console.log("namead", address.toLowerCase());
+      //   console.log("name", name);
+      //   if (name) setENSName(name);
+      // });
     } else setENSName("");
   }, [address, provider, connected]);
   async function refreshNotifications() {
@@ -76,7 +76,7 @@ const Header = () => {
           </Link>
         </Box>
         <Box display="flex" textAlign="right">
-          <IconButton icon={<RepeatIcon />} onClick={refreshNotifications} />
+          <IconButton icon={<RepeatIcon />} onClick={refreshNotifications} aria-label={""} />
           {!connected ? (
             <Button
               fontSize="14px"

@@ -56,12 +56,12 @@ export default function Home() {
       await provider.send("wallet_switchEthereumChain", [
         {
           chainId: idToHexString(
-            evmChainId[NetworkId.ETHEREUM_TESTNET]
+            evmChainId[NetworkId.OPTIMISM_TESTNET]
           ),
         },
       ]);
       depositContract = new ethers.Contract(
-        DEPOSIT_ADDRESS[NetworkId.ETHEREUM_TESTNET],
+        DEPOSIT_ADDRESS[NetworkId.OPTIMISM_TESTNET],
         UserDepositABI.abi,
         provider.getSigner()
       ) as UserDeposit;
