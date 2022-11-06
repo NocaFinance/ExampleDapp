@@ -24,18 +24,20 @@ const Header = () => {
   const [ENSName, setENSName] = useState("");
   useEffect(() => {
     console.log("namelol");
-    if (connected) {
+    console.log("lol", address);
+    if (connected && address) {
       console.log("namein");
       const ethProvider = new ethers.providers.JsonRpcProvider(
         NETWORKS[NetworkId.ETHEREUM_TESTNET].rpcUrls[0],
         5
       );
-      debugger;
-      ethProvider.lookupAddress(address).then((name) => {
-        console.log("namead", address.toLowerCase());
-        console.log("name", name);
-        if (name) setENSName(name);
-      });
+      console.log("lol", address);
+
+      // ethProvider.lookupAddress(address).then((name) => {
+      //   console.log("namead", address.toLowerCase());
+      //   console.log("name", name);
+      //   if (name) setENSName(name);
+      // });
     } else setENSName("");
   }, [address, provider, connected]);
   return (

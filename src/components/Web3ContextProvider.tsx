@@ -71,7 +71,7 @@ export const useWeb3Context = () => {
   if (!web3Context) {
     throw new Error(
       "useWeb3Context() can only be used inside of <Web3ContextProvider />, " +
-        "please declare it at a higher level."
+      "please declare it at a higher level."
     );
   }
   const { onChainProvider } = web3Context;
@@ -119,7 +119,7 @@ export function checkCachedProvider(web3Modal: Web3Modal): boolean {
   return true;
 }
 
-export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
+export const Web3ContextProvider: React.FC<{ children: ReactElement; }> = ({
   children,
 }) => {
   const [connected, setConnected] = useState(false);
@@ -205,7 +205,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({
     _initListeners(rawProvider);
 
     const connectedProvider = new Web3Provider(rawProvider, "any");
-    const isMetamask = (connectedProvider as any).provider.connected == false;
+    const isMetamask = !(connectedProvider as any).provider.connected;
     const connectedAddress = await connectedProvider.getSigner().getAddress();
     const newNetworkId = getNetworkIdFromChainId(
       await connectedProvider.getNetwork().then((network) => network.chainId)

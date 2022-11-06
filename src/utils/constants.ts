@@ -87,7 +87,7 @@ interface INetwork {
 export const USER_SELECTABLE_NETWORKS = [
   // NetworkId.ETHEREUM,
   NetworkId.AVALANCHE_TESTNET,
-  NetworkId.POLYGON_TESTNET,
+  NetworkId.ETHEREUM_TESTNET
   // NetworkId.BSC_TESTNET,
 ];
 
@@ -290,7 +290,7 @@ export const protocols = [
     depositTokenNames: ["Polygon Morpho USDC"],
   },
 ];
-
+export const MASTER_CHAIN = NetworkId.AVALANCHE_TESTNET;
 export const tokens = [
   {
     name: "USDC",

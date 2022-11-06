@@ -21,8 +21,14 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import NetworkButton from "../../components/NetworkButton";
 import { useWeb3Context } from "../../components/Web3ContextProvider";
-import { NetworkId, pools, tokens } from "../../utils/constants";
+import { DEPOSIT_ADDRESS, evmChainId, MASTER_CHAIN, NetworkId, pools, tokens } from "../../utils/constants";
+import InoERC20ABI from "../../../out/tokens/InoERC20.sol/InoERC20.json";
+import UserDepositABI from "../../../out/contracts/UserDeposit.sol/UserDeposit.json";
 import { pool } from "../../utils/pools";
+import { InoERC20, UserDeposit } from "../../../types/ethers-contracts";
+import { ethers } from "ethers";
+import { formatEther, parseEther } from "ethers/lib/utils";
+import { idToHexString } from "../../utils/networkHelpers";
 
 const PoolDetails: NextPage = () => {
   const router = useRouter();
@@ -94,7 +100,7 @@ const PoolDetails: NextPage = () => {
   }
 };
 
-const DepositBox = ({ pool }: { pool: pool }) => {
+const DepositBox = ({ pool }: { pool: pool; }) => {
   const [amount, setAmount] = useState(undefined as number | undefined);
   const [maxAmount, setMaxAmount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -102,23 +108,33 @@ const DepositBox = ({ pool }: { pool: pool }) => {
     useWeb3Context();
   console.log("chainid", networkId);
   useEffect(() => {
-    if (isMetamask) {
-      // const tokenContract = new ethers.Contract(
-      //           tokens[0].networks[networkId].address,
-      //           InoERC20ABI.abi,
-      //           provider.getSigner()
-      //         ) as InoERC20;
-      //setMaxAmount(tokenContract.balanceOf(address));
-    } else {
-      // const tokenContract = new ethers.Contract(
-      //           tokens[0].networks[MASTER_CHAIN].address,
-      //           InoERC20ABI.abi,
-      //           provider.getSigner()
-      //         ) as InoERC20;
-      //setMaxAmount(tokenContract.balanceOf(address));
+    if (connected && address) {
+      if (isMetamask) {
+        const tokenContract = new ethers.Contract(
+          tokens[0].networks.find(network => network.network == networkId)!.address,
+          InoERC20ABI.abi,
+          provider.getSigner()
+        ) as InoERC20;
+        tokenContract.balanceOf(address).then((amount) => {
+          setMaxAmount(parseFloat(ethers.utils.formatEther(amount)));
+        });
+      } else {
+        try {
+          const tokenContract = new ethers.Contract(
+            tokens[0].networks.find(network => network.network == networkId)!.address,
+            InoERC20ABI.abi,
+            provider.getSigner()
+          ) as InoERC20;
+          tokenContract.balanceOf(address).then((amount) => {
+            setMaxAmount(parseFloat(ethers.utils.formatEther(amount)));
+          });
+        } catch {
+          console.log("lol");
+        }
+      }
+      setLoading(false);
     }
-    setLoading(false);
-  }, []);
+  }, [connected, address]);
   const toast = useToast();
   async function invest() {
     toast({
@@ -128,57 +144,61 @@ const DepositBox = ({ pool }: { pool: pool }) => {
       duration: 5000,
       isClosable: true,
     });
-    // for (const network of Object.keys(amounts)) {
-    //   if (amounts[parseFloat(network) as NetworkId] > 0) {
-    //     console.log("chosenToken", chosenToken);
-    //     console.log("network", network);
-    //     await provider.send("wallet_switchEthereumChain", [
-    //       {
-    //         chainId: idToHexString(
-    //           evmChainId[parseFloat(network) as NetworkId]
-    //         ),
-    //       },
-    //     ]);
-    //     const tokenContract = new ethers.Contract(
-    //       chosenToken.networks.find(
-    //         (tmp) => tmp.network == parseFloat(network)
-    //       )!.address,
-    //       InoERC20ABI.abi,
-    //       provider.getSigner()
-    //     ) as InoERC20;
-    //     const curAllowance = parseFloat(
-    //       formatEther(
-    //         await tokenContract.allowance(
-    //           address,
-    //           DEPOSIT_ADDRESS[parseFloat(network) as NetworkId]
-    //         )
-    //       )
-    //     );
-    //     if (curAllowance < amounts[parseFloat(network) as NetworkId]) {
-    //       await tokenContract.approve(
-    //         DEPOSIT_ADDRESS[parseFloat(network) as NetworkId],
-    //         ethers.constants.MaxUint256
-    //       );
-    //     }
-    //     const depositContract = new ethers.Contract(
-    //       DEPOSIT_ADDRESS[parseFloat(network) as NetworkId],
-    //       UserDepositABI.abi,
-    //       provider.getSigner()
-    //     ) as UserDeposit;
-    //     await depositContract.depositFunds(
-    //       parseEther(amounts[parseFloat(network) as NetworkId].toString())
-    //     );
-    //   }
-    // }
-
-    // toast({
-    //   title: "Investment submitted",
-    //   description: "Your funds will be allocated to the protocol shortly.",
-    //   status: "success",
-    //   duration: 5000,
-    //   isClosable: true,
-    // });
+    let tokenContract: any;
+    if (isMetamask) {
+      tokenContract = new ethers.Contract(
+        tokens[0].networks.find((network) => network.network == networkId)!.address,
+        InoERC20ABI.abi,
+        provider.getSigner()
+      ) as InoERC20;
+    }
+    else {
+      await provider.send("wallet_switchEthereumChain", [
+        {
+          chainId: idToHexString(
+            evmChainId[NetworkId.AVALANCHE_TESTNET]
+          ),
+        },
+      ]);
+      tokenContract = new ethers.Contract(
+        tokens[0].networks.find((network) => network.network == NetworkId.AVALANCHE_TESTNET)!.address,
+        InoERC20ABI.abi,
+        provider.getSigner()
+      ) as InoERC20;
+    }
+    const curAllowance = parseFloat(
+      formatEther(
+        await tokenContract.allowance(
+          address,
+          DEPOSIT_ADDRESS[networkId]
+        )
+      )
+    );
+    if (curAllowance < amount!) {
+      await tokenContract.approve(
+        DEPOSIT_ADDRESS[networkId],
+        ethers.constants.MaxUint256
+      );
+    }
+    const depositContract = new ethers.Contract(
+      DEPOSIT_ADDRESS[networkId],
+      UserDepositABI.abi,
+      provider.getSigner()
+    ) as UserDeposit;
+    await depositContract.depositFunds(
+      parseEther(amount!.toString())
+    );
+    toast({
+      title: "Investment submitted",
+      description: "Your funds will be allocated to the protocol shortly.",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
   }
+
+
+
   if (!loading && connected)
     return (
       <Box>
