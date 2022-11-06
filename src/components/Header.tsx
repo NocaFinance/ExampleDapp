@@ -9,6 +9,7 @@ import {
   Link,
   Text,
   useColorMode,
+  useToast,
 } from "@chakra-ui/react";
 import Logo from "../../public/x2";
 import { useRouter } from "next/router";
@@ -25,6 +26,7 @@ const Header = () => {
     useWeb3Context();
   const { toggleColorMode } = useColorMode();
   const [ENSName, setENSName] = useState("");
+  const toast = useToast();
   useEffect(() => {
     console.log("namelol");
     console.log("lol", address);
@@ -44,11 +46,27 @@ const Header = () => {
     } else setENSName("");
   }, [address, provider, connected]);
   async function refreshNotifications() {
-    const notifications = await PushAPI.user.getFeeds({
-      user: 'eip155:80001:' + address, // user address in CAIP
-      env: 'staging'
-    });
-    console.log("notifications", notifications);
+    if (!address || address == "") {
+      toast({
+        title: "Connect your wallet",
+        description: "Please",
+        status: "error",
+        duration: 20000,
+        isClosable: true,
+      });
+    } else {
+      const notifications = await PushAPI.user.getFeeds({
+        user: 'eip155:80001:' + address, // user address in CAIP
+        env: 'staging'
+      });
+      toast({
+        title: notifications[0].notification.title,
+        description: notifications[0].notification.body,
+        status: "success",
+        duration: 20000,
+        isClosable: true,
+      });
+    }
   }
   return (
     <>

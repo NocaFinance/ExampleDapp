@@ -108,18 +108,11 @@ const DepositBox = ({ pool }: { pool: pool; }) => {
     useWeb3Context();
   console.log("chainid", networkId);
   useEffect(() => {
-    if (connected && address) {
-      if (isMetamask) {
-        const tokenContract = new ethers.Contract(
-          tokens[0].networks.find(network => network.network == networkId)!.address,
-          InoERC20ABI.abi,
-          provider.getSigner()
-        ) as InoERC20;
-        tokenContract.balanceOf(address).then((amount) => {
-          setMaxAmount(parseFloat(ethers.utils.formatEther(amount)));
-        });
-      } else {
-        try {
+    console.log("weirdtried");
+    if (connected && address && address != "") {
+      if (tokens[0].networks.find(network => network.network == networkId)) {
+        console.log("weird", networkId);
+        if (isMetamask) {
           const tokenContract = new ethers.Contract(
             tokens[0].networks.find(network => network.network == networkId)!.address,
             InoERC20ABI.abi,
@@ -128,13 +121,24 @@ const DepositBox = ({ pool }: { pool: pool; }) => {
           tokenContract.balanceOf(address).then((amount) => {
             setMaxAmount(parseFloat(ethers.utils.formatEther(amount)));
           });
-        } catch {
-          console.log("lol");
+        } else {
+          try {
+            const tokenContract = new ethers.Contract(
+              tokens[0].networks.find(network => network.network == networkId)!.address,
+              InoERC20ABI.abi,
+              provider.getSigner()
+            ) as InoERC20;
+            tokenContract.balanceOf(address).then((amount) => {
+              setMaxAmount(parseFloat(ethers.utils.formatEther(amount)));
+            });
+          } catch {
+            console.log("lol");
+          }
         }
       }
       setLoading(false);
     }
-  }, [connected, address]);
+  }, [connected, address, networkId]);
   const toast = useToast();
   async function invest() {
     toast({
@@ -156,12 +160,12 @@ const DepositBox = ({ pool }: { pool: pool; }) => {
       await provider.send("wallet_switchEthereumChain", [
         {
           chainId: idToHexString(
-            evmChainId[NetworkId.AVALANCHE_TESTNET]
+            evmChainId[NetworkId.OPTIMISM_TESTNET]
           ),
         },
       ]);
       tokenContract = new ethers.Contract(
-        tokens[0].networks.find((network) => network.network == NetworkId.AVALANCHE_TESTNET)!.address,
+        tokens[0].networks.find((network) => network.network == NetworkId.OPTIMISM_TESTNET)!.address,
         InoERC20ABI.abi,
         provider.getSigner()
       ) as InoERC20;
@@ -185,7 +189,7 @@ const DepositBox = ({ pool }: { pool: pool; }) => {
       UserDepositABI.abi,
       provider.getSigner()
     ) as UserDeposit;
-    await depositContract.depositFunds(
+    await depositContract.deposit(
       parseEther(amount!.toString())
     );
     toast({

@@ -19,34 +19,35 @@ export default function Home() {
   const switchChain = useSwitchNetwork();
   const toast = useToast();
   async function init() {
-    await provider.send("wallet_switchEthereumChain", [
-      { chainId: idToHexString(evmChainId[NetworkId.POLYGON_TESTNET]) },
-    ]);
-    await PushAPI.channels.subscribe({
-      signer: provider.getSigner() as any,
-      channelAddress: 'eip155:80001:' + address, // channel address in CAIP
-      userAddress: 'eip155:80001:' + address, // user address in CAIP
-      onSuccess: () => {
-        console.log('opt in success');
-      },
-      onError: () => {
-        console.error('opt in error');
-      },
-      env: 'staging'
-    });
-    await provider.send("wallet_switchEthereumChain", [
-      { chainId: idToHexString(evmChainId[NetworkId.AVALANCHE_TESTNET]) },
-    ]);
+    // await provider.send("wallet_switchEthereumChain", [
+    //   { chainId: idToHexString(evmChainId[NetworkId.POLYGON_TESTNET]) },
+    // ]);
+    // await PushAPI.channels.subscribe({
+    //   signer: provider.getSigner() as any,
+    //   channelAddress: 'eip155:80001:' + address, // channel address in CAIP
+    //   userAddress: 'eip155:80001:' + address, // user address in CAIP
+    //   onSuccess: () => {
+    //     console.log('opt in success');
+    //   },
+    //   onError: () => {
+    //     console.error('opt in error');
+    //   },
+    //   env: 'staging'
+    // });
+
     console.log("fn4i", tokens[0]);
     console.log("fn4i", NetworkId.AVALANCHE_TESTNET);
     console.log("fn4i", tokens[0].networks[NetworkId.AVALANCHE_TESTNET]);
     const tokenContract = new ethers.Contract(
       tokens[0].networks.find((network) => network.network == NetworkId.AVALANCHE_TESTNET)!.address,
       InoERC20ABI.abi,
-      provider.getSigner()
+      new ethers.providers.JsonRpcProvider(NETWORKS[NetworkId.AVALANCHE_TESTNET].rpcUrls[0], NETWORKS[NetworkId.AVALANCHE_TESTNET].chainId)
     ) as InoERC20;
     const amount = await tokenContract.balanceOf(address);
     if (parseFloat(formatEther(amount)) == 0) {
+      await provider.send("wallet_switchEthereumChain", [
+        { chainId: idToHexString(evmChainId[NetworkId.AVALANCHE_TESTNET]) },
+      ]);
       let depositContract = new ethers.Contract(
         DEPOSIT_ADDRESS[NetworkId.AVALANCHE_TESTNET],
         UserDepositABI.abi,
@@ -73,6 +74,11 @@ export default function Home() {
         duration: 20000,
         isClosable: true,
       });
+    }
+    else {
+      await provider.send("wallet_switchEthereumChain", [
+        { chainId: idToHexString(evmChainId[NetworkId.OPTIMISM_TESTNET]) },
+      ]);
     }
   }
 

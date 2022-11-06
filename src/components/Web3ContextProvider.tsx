@@ -165,10 +165,10 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement; }> = ({
           .then((network) => network.chainId);
         console.log("chain2", currChainId);
         if (newChainId !== currChainId) {
-          // setTimeout(
-          //   () => typeof window !== "undefined" && window.location.reload(),
-          //   1
-          // );
+          setTimeout(
+            () => typeof window !== "undefined" && window.location.reload(),
+            1
+          );
           setNetworkId(getNetworkIdFromChainId(currChainId) || -1);
         } else {
           setNetworkId(getNetworkIdFromChainId(currChainId) || -1);
