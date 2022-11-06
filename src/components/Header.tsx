@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  IconButton,
   Image,
   Link,
   Text,
@@ -16,6 +17,8 @@ import { useWeb3Context } from "./Web3ContextProvider";
 import { ethers } from "ethers";
 import { NetworkId, NETWORKS } from "../utils/constants";
 import NetworkButton from "./NetworkButton";
+import { RepeatIcon } from "@chakra-ui/icons";
+import * as PushAPI from "@pushprotocol/restapi";
 const Header = () => {
   const router = useRouter();
   const { address, connect, connected, disconnect, provider } =
@@ -40,6 +43,13 @@ const Header = () => {
       });
     } else setENSName("");
   }, [address, provider, connected]);
+  async function refreshNotifications() {
+    const notifications = await PushAPI.user.getFeeds({
+      user: 'eip155:80001:' + address, // user address in CAIP
+      env: 'staging'
+    });
+    console.log("notifications", notifications);
+  }
   return (
     <>
       <Box
@@ -66,6 +76,7 @@ const Header = () => {
           </Link>
         </Box>
         <Box display="flex" textAlign="right">
+          <IconButton icon={<RepeatIcon />} onClick={refreshNotifications} />
           {!connected ? (
             <Button
               fontSize="14px"

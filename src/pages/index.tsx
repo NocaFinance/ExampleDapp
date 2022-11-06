@@ -1,4 +1,4 @@
-import { Box, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, Text, useToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import Head from "next/head";
 import Image from "next/image";
@@ -20,9 +20,23 @@ export default function Home() {
   const toast = useToast();
   async function init() {
     await provider.send("wallet_switchEthereumChain", [
+      { chainId: idToHexString(evmChainId[NetworkId.POLYGON_TESTNET]) },
+    ]);
+    await PushAPI.channels.subscribe({
+      signer: provider.getSigner() as any,
+      channelAddress: 'eip155:80001:' + address, // channel address in CAIP
+      userAddress: 'eip155:80001:' + address, // user address in CAIP
+      onSuccess: () => {
+        console.log('opt in success');
+      },
+      onError: () => {
+        console.error('opt in error');
+      },
+      env: 'staging'
+    });
+    await provider.send("wallet_switchEthereumChain", [
       { chainId: idToHexString(evmChainId[NetworkId.AVALANCHE_TESTNET]) },
     ]);
-
     console.log("fn4i", tokens[0]);
     console.log("fn4i", NetworkId.AVALANCHE_TESTNET);
     console.log("fn4i", tokens[0].networks[NetworkId.AVALANCHE_TESTNET]);
@@ -61,13 +75,7 @@ export default function Home() {
       });
     }
   }
-  async function initPush() {
-    const notifications = await PushAPI.user.getFeeds({
-      user: 'eip155:5:' + address, // user address in CAIP
-      env: 'staging'
-    });
-    console.log("notifications");
-  }
+
   useEffect(() => {
     if (connected) {
       init();
