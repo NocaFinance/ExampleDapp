@@ -10,13 +10,17 @@
     "contracts": "forge install && forge build && typechain --target=ethers-v5 'out/**/*.json'"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.11",
     "@chakra-ui/react": "^2.3.6",
     "@coinbase/wallet-sdk": "^3.5.3",
     "@emotion/react": "11",
     "@emotion/styled": "11",
     "@ethersproject/providers": "^5.7.2",
     "@ledgerhq/iframe-provider": "^0.4.2",
+    "@pushprotocol/restapi": "^0.2.1",
+    "@pushprotocol/uiweb": "^0.2.3",
     "@walletconnect/web3-provider": "^1.8.0",
+    "ethers": "^5.7.2",
     "framer-motion": "6",
     "next": "13.0.0",
     "react": "18.2.0",
