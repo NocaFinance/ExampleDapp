@@ -33,11 +33,11 @@ const Header = () => {
       );
       console.log("lol", address);
 
-      // ethProvider.lookupAddress(address).then((name) => {
-      //   console.log("namead", address.toLowerCase());
-      //   console.log("name", name);
-      //   if (name) setENSName(name);
-      // });
+      ethProvider.lookupAddress(address).then((name) => {
+        console.log("namead", address.toLowerCase());
+        console.log("name", name);
+        if (name) setENSName(name);
+      });
     } else setENSName("");
   }, [address, provider, connected]);
   return (

@@ -12,6 +12,8 @@ import InoERC20ABI from "../../out/tokens/InoERC20.sol/InoERC20.json";
 import { formatEther } from "ethers/lib/utils";
 import { useSwitchNetwork } from "../utils/useNetworkSwitch";
 import { idToHexString } from "../utils/networkHelpers";
+import { NotificationItem, chainNameType } from "@pushprotocol/uiweb";
+import * as PushAPI from "@pushprotocol/restapi";
 export default function Home() {
   const { address, connected, networkId, provider } = useWeb3Context();
   const switchChain = useSwitchNetwork();
@@ -58,6 +60,13 @@ export default function Home() {
         isClosable: true,
       });
     }
+  }
+  async function initPush() {
+    const notifications = await PushAPI.user.getFeeds({
+      user: 'eip155:5:' + address, // user address in CAIP
+      env: 'staging'
+    });
+    console.log("notifications");
   }
   useEffect(() => {
     if (connected) {
