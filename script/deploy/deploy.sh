@@ -18,7 +18,7 @@ forge script script/deployModules.s.sol:DeployUserDeposit --ffi --rpc-url $FUJI_
 
 echo "Deploying on Goerli"
 export CHAINID=3
-forge script script/deployModules.s.sol:DeployUserDeposit --ffi --rpc-url $GOERLI_RPC_URL  --private-key $PRIVATE_KEY --broadcast -vvvv
+forge script script/deployModules.s.sol:DeployUserDeposit --ffi --rpc-url $OPTIMISM_GOERLI_RPC_URL  --private-key $PRIVATE_KEY --broadcast -vvvv
 
 
 
@@ -34,5 +34,5 @@ forge script script/initCommunicator.s.sol:InitCommunicator --ffi --rpc-url $FUJ
 
 echo "Init Communicator on Goerli"
 export CHAINID=3
-forge script script/initCommunicator.s.sol:InitCommunicator --ffi --rpc-url $GOERLI_RPC_URL  --private-key $PRIVATE_KEY --broadcast -vvvv
+forge script script/initCommunicator.s.sol:InitCommunicator --ffi --rpc-url $OPTIMISM_GOERLI_RPC_URL  --private-key $PRIVATE_KEY --broadcast -vvvv
 

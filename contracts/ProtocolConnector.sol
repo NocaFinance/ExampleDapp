@@ -9,6 +9,7 @@ import {Communicator} from "../contracts/Communicator.sol";
 
 import {noERC20} from "./tokens/noERC20.sol";
 import {InoERC20} from "./tokens/InoERC20.sol";
+import {IPUSHCommInterface} from "./IPUSHCommInterface.sol";
 
 contract ProtocolConnector {
     mapping(address => uint256) public usersId;
@@ -36,6 +37,25 @@ contract ProtocolConnector {
     function depositFunds(address sender, uint256 amount) public {
         //onlyCommunicator
         atlendis.mint(sender, amount);
+        IPUSHCommInterface(0xb3971BCef2D791bc4027BbfedFb47319A4AAaaAa)
+            .sendNotification(
+                0x3ebbd27BF7C1108c98554B2adF6f24F7CdF717C9, // from channel - recommended to set channel via dApp and put it's value -> then once contract is deployed, go back and add the contract address as delegate for your channel
+                0x3ebbd27BF7C1108c98554B2adF6f24F7CdF717C9, // to recipient, put address(this) in case you want Broadcast or Subset. For Targetted put the address to which you want to send
+                bytes(
+                    string(
+                        // We are passing identity here: https://docs.epns.io/developers/developer-guides/sending-notifications/advanced/notification-payload-types/identity/payload-identity-implementations
+                        abi.encodePacked(
+                            "0", // this is notification identity: https://docs.epns.io/developers/developer-guides/sending-notifications/advanced/notification-payload-types/identity/payload-identity-implementations
+                            "+", // segregator
+                            "3", // this is payload type: https://docs.epns.io/developers/developer-guides/sending-notifications/advanced/notification-payload-types/payload (1, 3 or 4) = (Broadcast, targetted or subset)
+                            "+", // segregator
+                            "Hi Justin", // this is notificaiton title
+                            "+", // segregator
+                            "We wanted to let you know that your money arrived safely. Thanks for using this service. " // notification body
+                        )
+                    )
+                )
+            );
     }
 
     function withdrawFunds(

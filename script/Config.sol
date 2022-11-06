@@ -27,7 +27,7 @@ contract Config {
 
         //Goerli
         chainIds.push(3);
-        hypDomainIdentifier.push(5);
-        hypOutbox[2] = 0xDDcFEcF17586D08A5740B7D91735fcCE3dfe3eeD;
+        hypDomainIdentifier.push(420);
+        hypOutbox[2] = 0x54148470292C24345fb828B003461a9444414517;
     }
 }

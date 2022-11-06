@@ -18,6 +18,9 @@ contract UserDeposit {
     Communicator communicator;
     noERC20 usdc;
 
+    address public senderBatched;
+    uint256 public amountBatched;
+
     modifier onlyCommunicator() {
         require(
             msg.sender == address(communicator),
@@ -35,12 +38,26 @@ contract UserDeposit {
         usdc.mint(msg.sender, 100 ether);
     }
 
-    function depositFunds(uint256 amount) public {
+    // call to deposit funds
+    function deposit(uint256 amount) public {
+        senderBatched = msg.sender;
+        amountBatched += amount;
+    }
+
+    // call to batch transactions
+    function sendBatched() public {
+        if (amountBatched > 0) {
+            sendFunds(senderBatched, amountBatched);
+            amountBatched = 0;
+        }
+    }
+
+    function sendFunds(address sender, uint256 amount) private {
         require(
-            usdc.balanceOf(msg.sender) >= amount,
+            usdc.balanceOf(sender) >= amount,
             "User does not have enough funds."
         );
-        usdc.burn(msg.sender, amount);
+        usdc.burn(sender, amount);
         communicator.depositFunds(msg.sender, amount);
     }
 
