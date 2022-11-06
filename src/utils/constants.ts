@@ -298,11 +298,11 @@ export const tokens = [
     networks: [
       {
         network: NetworkId.AVALANCHE_TESTNET,
-        address: "0xe7458e20d62d59261d85aaf9fdd308beba0489d2",
+        address: "0x01a2c4c37138604a5973e7a5aa4cad00c7639ec4",
       },
       {
         network: NetworkId.ETHEREUM_TESTNET,
-        address: "0xd0d6e9382328fe8e58ac4c7b3e531879344992d4",
+        address: "0x1039b0921cae63ff7998d5e4b3dad47fd8590a4d",
       },
     ],
   },
@@ -329,17 +329,17 @@ export const investmentTokens = [
     networks: [
       {
         network: NetworkId.POLYGON_TESTNET,
-        address: "0x797f95128a3130bee76cf0cc8ff69b9180c66a29",
+        address: "0xfd8d1289c360fe2747bfd13a4c298ae042c7b6a0",
       },
     ],
   },
 ];
 
 export const DEPOSIT_ADDRESS: { [x in NetworkId]: string } = {
-  [NetworkId.ETHEREUM_TESTNET]: "0x008cc2d4db48386d2cc3fa528a034fee2201dc1f",
+  [NetworkId.ETHEREUM_TESTNET]: "0x3b92fdcf856179d41820209823602189b6dfc552",
   // [NetworkId.BSC_TESTNET]: "",
-  [NetworkId.AVALANCHE_TESTNET]: "0xbc0e2f098f92bef22ea2423871c01f81aa9728c7",
-  [NetworkId.POLYGON_TESTNET]: "0x7eede7a809d3dc93d91d4e0b6519a2f19a17bcd7",
+  [NetworkId.AVALANCHE_TESTNET]: "0xd1923183c2cded581f2d1772044317b4a413a19d",
+  [NetworkId.POLYGON_TESTNET]: "0xd1923183c2cded581f2d1772044317b4a413a19d",
 };
 
 export const pools: pool[] = [

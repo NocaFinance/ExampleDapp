@@ -13,10 +13,31 @@ import Logo from "../../public/x2";
 import { useRouter } from "next/router";
 import { shorten } from "../utils/networkHelpers";
 import { useWeb3Context } from "./Web3ContextProvider";
+import { ethers } from "ethers";
+import { NetworkId, NETWORKS } from "../utils/constants";
+import NetworkButton from "./NetworkButton";
 const Header = () => {
   const router = useRouter();
-  const { address, connect, connected, disconnect } = useWeb3Context();
+  const { address, connect, connected, disconnect, provider } =
+    useWeb3Context();
   const { toggleColorMode } = useColorMode();
+  const [ENSName, setENSName] = useState("");
+  useEffect(() => {
+    console.log("namelol");
+    if (connected) {
+      console.log("namein");
+      const ethProvider = new ethers.providers.JsonRpcProvider(
+        NETWORKS[NetworkId.ETHEREUM_TESTNET].rpcUrls[0],
+        5
+      );
+      debugger;
+      ethProvider.lookupAddress(address).then((name) => {
+        console.log("namead", address.toLowerCase());
+        console.log("name", name);
+        if (name) setENSName(name);
+      });
+    } else setENSName("");
+  }, [address, provider, connected]);
   return (
     <>
       <Box
@@ -63,7 +84,7 @@ const Header = () => {
               variant="solid"
               onClick={disconnect}
             >
-              {shorten(address)}
+              {ENSName ? ENSName : shorten(address)}
             </Button>
           )}
         </Box>
