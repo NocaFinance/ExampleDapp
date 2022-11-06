@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Image,
   Link,
   Text,
   useColorMode,
@@ -11,9 +12,32 @@ import {
 import Logo from "../../public/x2";
 import { useRouter } from "next/router";
 import { shorten } from "../utils/networkHelpers";
+import { useWeb3Context } from "./Web3ContextProvider";
+import { ethers } from "ethers";
+import { NetworkId, NETWORKS } from "../utils/constants";
+import NetworkButton from "./NetworkButton";
 const Header = () => {
   const router = useRouter();
+  const { address, connect, connected, disconnect, provider } =
+    useWeb3Context();
   const { toggleColorMode } = useColorMode();
+  const [ENSName, setENSName] = useState("");
+  useEffect(() => {
+    console.log("namelol");
+    if (connected) {
+      console.log("namein");
+      const ethProvider = new ethers.providers.JsonRpcProvider(
+        NETWORKS[NetworkId.ETHEREUM_TESTNET].rpcUrls[0],
+        5
+      );
+      debugger;
+      ethProvider.lookupAddress(address).then((name) => {
+        console.log("namead", address.toLowerCase());
+        console.log("name", name);
+        if (name) setENSName(name);
+      });
+    } else setENSName("");
+  }, [address, provider, connected]);
   return (
     <>
       <Box
@@ -21,27 +45,47 @@ const Header = () => {
         justifyContent={"space-between"}
         px="200px"
         height="75px"
-        alignItems={"center "}
+        alignItems={"center"}
       >
         <Box>
           <Link onClick={() => router.push("/")}>
-            <Logo height={50} />
+            <Box alignItems="center" justifyContent={"center"}>
+              <Image
+                src={
+                  "/logo_transparent.png"
+                  // "https://i0.wp.com/atlendis.io/wp-content/uploads/2022/02/atlendis-logo-horizontal-white.png"
+                }
+                alt="token"
+                width="75px"
+                marginTop={"10px"}
+                objectFit={"contain"}
+              />
+            </Box>
           </Link>
         </Box>
         <Box display="flex" textAlign="right">
-          {router.route == "/" ? (
+          {!connected ? (
             <Button
-              onClick={() => router.push("/overview")}
               fontSize="14px"
               lineHeight="17px"
+              colorScheme="green"
               variant="solid"
-              textAlign="center"
-              mr="24px"
+              onClick={() => {
+                connect();
+              }}
             >
-              App
+              Connect Wallet
             </Button>
           ) : (
-            <Box></Box>
+            <Button
+              fontSize="14px"
+              lineHeight="17px"
+              colorScheme="green"
+              variant="solid"
+              onClick={disconnect}
+            >
+              {ENSName ? ENSName : shorten(address)}
+            </Button>
           )}
         </Box>
       </Box>
